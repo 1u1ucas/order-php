@@ -27,14 +27,24 @@ class Order {private int $id;
         if (count($this->products) > 5) {
             throw new Exception('Vous ne pouvez pas commander plus de 5 produits');
         }
+
+        echo "Commande {$this->id} passée !";
     }
 
-    public function createOrder() {
-
-        return "Commande {$this->id} passée !";
+    public function deleteProduct($product) {
+        if (($key = array_search($product, $this->products)) !== false) {
+            unset($this->products[$key]);
+            return 'Produit supprimé';
+        }
+        return 'Produit non trouvé';
     }
+
 }
 
-$order = new Order('John Doe', ['product1', 'product2', 'product3']);
+try {
+    $order = new Order('John Doe', ['product1', 'product2', 'product3']);
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
 
-echo $order->createOrder();
+echo $order->deleteProduct('product4');
