@@ -1,14 +1,25 @@
 <?php
 
-class Order {
-    private $customerName;
-    private $products;
-    private $id;
+class Order {private int $id;
+
+    private array $products;
+
+    private DateTime $createdAt;
+
+    private float $totalPrice;
+
+    private string $status;
+
+    private ?string $shippingMethod;
+
+    private ?string $shippingAddress;
+
+    private string $customerName;
 
     public function __construct($customerName, $products) {
         $this->customerName = $customerName;
         $this->products = $products;
-        $this->id = uniqid(); // Génère un ID unique pour chaque commande
+        $this->id = rand(); // Génère un ID unique pour chaque commande
     }
 
     public function createOrder() {
