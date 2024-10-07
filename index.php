@@ -1,36 +1,28 @@
-<?php 
+<?php
 
 class Order {
+    private $customerName;
+    private $products;
+    private $id;
 
-    private int $id;
-
-    private array $products;
-
-    private DateTime $createdAt;
-
-    private float $totalPrice;
-
-    private string $status;
-
-    private ?string $shippingMethod;
-
-    private ?string $shippingAddress;
-
-    private string $customerName;
-
-
-    public function __construct(string $customerName, array $products) {
-        $this->status = 'CART';
-        $this->createdAt = new DateTime();
-        $this->id = rand();
-
+    public function __construct($customerName, $products) {
         $this->customerName = $customerName;
         $this->products = $products;
+        $this->id = uniqid(); // Génère un ID unique pour chaque commande
+    }
 
-        $this->totalPrice = 5 * count($products);
-        echo "Commande {$this->id} créée, d'un montant de {$this->totalPrice} !";
-	}
+    public function createOrder() {
+        if ($this->customerName === 'David Robert') {
+            throw new Exception('David Robert n\'a pas le droit de commander');
+        }
+        if (count($this->products) > 5) {
+            throw new Exception('Vous ne pouvez pas commander plus de 5 produits');
+        }
 
+        return "Commande {$this->id} passée !";
+    }
 }
 
 $order = new Order('John Doe', ['product1', 'product2', 'product3']);
+
+echo $order->createOrder();
