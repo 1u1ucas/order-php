@@ -19,16 +19,17 @@ class Order {private int $id;
     public function __construct($customerName, $products) {
         $this->customerName = $customerName;
         $this->products = $products;
-        $this->id = rand(); // Génère un ID unique pour chaque commande
-    }
+        $this->id = rand();
 
-    public function createOrder() {
         if ($this->customerName === 'David Robert') {
             throw new Exception('David Robert n\'a pas le droit de commander');
         }
         if (count($this->products) > 5) {
             throw new Exception('Vous ne pouvez pas commander plus de 5 produits');
         }
+    }
+
+    public function createOrder() {
 
         return "Commande {$this->id} passée !";
     }
