@@ -11,6 +11,7 @@
 	
 	<main>
 		<p>La commande a été créée avec succès</p>
+        <?php var_dump($order) ?>
 	</main>
 
 	</body>

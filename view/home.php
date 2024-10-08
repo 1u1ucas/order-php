@@ -21,12 +21,12 @@
 			<label for="product">Produit</label>
 
 			<select id="product" name="products[]" multiple>
-                <option value="1">Iphone</option>
-                <option value="2">Samsung</option>
-                <option value="3">Huawei</option>
-                <option value="4">Xiaomi</option>
-                <option value="5">Oppo</option>
-                <option value="6">Vivo</option>
+                <option value="Iphone">Iphone</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Huawei">Huawei</option>
+                <option value="Xiaomi">Xiaomi</option>
+                <option value="Oppo">Oppo</option>
+                <option value="Vivo">Vivo</option>
 			</select>
 			<br>
 
