@@ -17,7 +17,7 @@ class Order {private int $id;
     private string $customerName;
 
     public function __construct($customerName, $products,) {
-        $this->status = 'cart';
+        $this->status = 'CART';
         $this->customerName = $customerName;
         $this->products = $products;
         $this->createdAt = new DateTime();
@@ -35,6 +35,11 @@ class Order {private int $id;
     }
 
     public function deleteProduct($product) {
+
+        if ($this->status !== 'CART') {
+            throw new Exception('Vous ne pouvez pas supprimer de produit d\'une commande payée');
+        }
+
         if (($key = array_search($product, $this->products)) !== false) {
             unset($this->products[$key]);
             return 'Produit supprimé';
@@ -44,7 +49,7 @@ class Order {private int $id;
 
     public function addProduct($product) {
 
-        if (!$this->status === 'cart') {
+        if (!$this->status === 'CART') {
             throw new Exception('Vous ne pouvez pas ajouter de produit à une commande payée');
         }
 
@@ -63,7 +68,7 @@ class Order {private int $id;
 
     public function adressShipping($shippingAddress) {
 
-        if ($this->status !== 'cart') {
+        if ($this->status !== 'CART') {
             throw new Exception('Vous ne pouvez pas modifier une commande payée');
         }
 
@@ -78,7 +83,7 @@ class Order {private int $id;
 
     public function pay($shippingMethod) {
 
-        if ($this->status !== 'cart') {
+        if ($this->status !== 'CART') {
             throw new Exception('Commande déjà payée');
         }
 
@@ -99,7 +104,7 @@ class Order {private int $id;
     }
 
     public function buyOrder () {
-        if ($this->status !== 'cart') {
+        if ($this->status !== 'CART') {
             throw new Exception('Commande déjà payée');
         }
 
@@ -111,7 +116,7 @@ class Order {private int $id;
             throw new Exception('Vous devez renseigner une méthode de livraison');
         }
 
-        $this->status = 'paid';
+        $this->status = 'PAID';
         return 'Commande payée';
     }
 
