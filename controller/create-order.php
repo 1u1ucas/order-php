@@ -2,6 +2,8 @@
 
 require_once '../model/Order.php';
 
+session_start();
+
 try {
 
 	$customerName = $_POST['customerName'];
@@ -9,7 +11,9 @@ try {
 
 	$order = new Order($customerName, $products);
 
-	require_once '../view/order-created.php';
+	$_SESSION['order'] = $order;
+
+	require_once '../view/shippingAdress.php';
 
 } catch (Exception $e) {
 

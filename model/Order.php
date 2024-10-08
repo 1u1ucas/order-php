@@ -2,7 +2,7 @@
 
 class Order {
 
-    public static $CART_STATUS = "CART";
+	public static $CART_STATUS = "CART";
 	public static $SHIPPING_ADDRESS_SET_STATUS = "SHIPPING_ADDRESS_SET";
 	public static $SHIPPING_METHOD_SET_STATUS = "SHIPPING_METHOD_SET";
 	public static $PAID_STATUS = "PAID";
@@ -12,144 +12,126 @@ class Order {
 	public static $AUTORIZED_SHIPPING_COUNTRIES = ['France', 'Belgique', 'Luxembourg'];
 	public static $AVAILABLE_SHIPPING_METHODS = ['Chronopost Express', 'Point relais', 'Domicile'];
 	public static $PAID_SHIPPING_METHOD = 'Chronopost Express';
-
 	public static $PAID_SHIPPING_METHODS_COST = 5;
-    
-    private int $id;
 
-    private array $products;
+	private array $products;
 
-    private DateTime $createdAt;
+	private string $customerName;
 
-    private float $totalPrice;
+	private float $totalPrice;
 
-    private string $status;
+	private int $id;
+	private DateTime $createdAt;
 
-    private ?string $shippingMethod;
+	private string $status;
 
-    private ?string $shippingAddress;
+	private ?string $shippingMethod;
 
-    private string $customerName;
+	private ?string $shippingCity;
 
+	private ?string $shippingAddress;
 
-    public function __construct($customerName, $products,) {
-        $this->status = 'CART';
-        $this->customerName = $customerName;
-        $this->products = $products;
-        $this->createdAt = new DateTime();
-        $this->totalPrice = 5*count($products);
-        $this->id = rand();
+	private ?string $shippingCountry;
 
-        if ($this->customerName === Order::$BLACKLISTED_CUSTOMERS){
-            throw new Exception ( Order::$BLACKLISTED_CUSTOMERS .' n\'a pas le droit de commander');
-        }
+	public function __construct(string $customerName, array $products) {
 
-        if (count($products) > Order::$MAX_PRODUCTS_BY_ORDER) {
+		if (count($products) > Order::$MAX_PRODUCTS_BY_ORDER) {
 			throw new Exception("Vous ne pouvez pas commander plus de " . Order::$MAX_PRODUCTS_BY_ORDER . " produits");
 		}
 
-        echo "Commande {$this->id} passée !";
-    }
+		if (in_array($customerName, Order::$BLACKLISTED_CUSTOMERS)) {
+			throw new Exception("Vous êtes blacklisté");
+		}
 
-    private function calculateTotalCartPrice() {
-        $this->totalPrice = Order::$UNIQUE_PRODUCT_PRICE * count($this->products);
+		$this->status = Order::$CART_STATUS;
+		$this->createdAt = new DateTime();
+		$this->id = rand();
+		$this->products = $products;
+		$this->customerName = $customerName;
+		$this->totalPrice = count($products) * Order::$UNIQUE_PRODUCT_PRICE;
+	}
 
-        return $this->totalPrice;
-    }
 
-    private function removeProduct($product) {
-        ($key = array_search($product, $this->products)) !== false;
-        return $key;
-    }
 
-    public function deleteProduct($product) {
+	private function calculateTotalCart():  float {
+		return count($this->products) * Order::$UNIQUE_PRODUCT_PRICE;
+	}
 
-        if ($this->status !== Order::$CART_STATUS) {
-            throw new Exception('Vous ne pouvez pas supprimer de produit d\'une commande qui n\'est pas en cours');
-        }
 
-        if (!in_array($product, $this->products)) {
-            throw new Exception('Vous ne pouvez pas supprimer un produit que vous n\'avez pas commandé');
-        }
+	public function removeProduct(string $product) {
+		$this->removeProductFromList($product);
+		$this->totalPrice = $this->calculateTotalCart();
 
-        $key = $this->removeProduct($product);
-        unset($this->products[$key]);
-    }
+		$productsAsString = implode(',', $this->products);
+		echo "Liste des produits : {$productsAsString}</br></br>";
+	}
 
-    public function addProduct($product) {
+	private function removeProductFromList(string $product) {
+		if (($key = array_search($product, $this->products)) !== false) {
+			unset($this->products[$key]);
+		}
+	}
 
-        if (!$this->status === Order::$CART_STATUS) {
-            throw new Exception('Vous ne pouvez pas ajouter de produit à une commande ');
-        }
 
-        if (count($this->products) >= Order::$MAX_PRODUCTS_BY_ORDER) {
-            throw new Exception('Vous ne pouvez pas commander plus de ' . Order::$MAX_PRODUCTS_BY_ORDER .' produits');
-        }
-        if (in_array($product, $this->products)) {
-            throw new Exception('Vous avez déjà commandé ce produit');
-        }
-        $this->products[] = $product;
-        $this->totalPrice += $this->calculateTotalCartPrice();
+	public function addProduct(string $product): void {
 
-        return 'Produit ajouté';
+		if ($this->isProductInCart($product)) {
+			throw new Exception('Le produit existe déjà dans le panier');
+		}
 
-    }
+		if ($this->status === Order::$CART_STATUS) {
+			throw new Exception('Vous ne pouvez plus ajouter de produits');
+		}
 
-    public function adressShipping($shippingAddress) {
+		if (count($this->products) >= Order::$MAX_PRODUCTS_BY_ORDER) {
+			throw new Exception('Vous ne pouvez pas commander plus de ' . Order::$MAX_PRODUCTS_BY_ORDER .' produits');
+		}
 
-        if ($this->status !== Order::$CART_STATUS) {
-            throw new Exception('Vous ne pouvez pas modifier une commande qui n\'est pas en cours');
-        }
+		$this->products[] = $product;
+		$this->totalPrice = $this->calculateTotalCart();
+	}
 
-        if (!in_array($shippingAddress, Order::$AUTORIZED_SHIPPING_COUNTRIES)) {
-            throw new Exception('Nous ne livrons pas dans ce pays');
-        }
+	private function isProductInCart(string $product): bool {
+		return in_array($product, $this->products);
+	}
 
-        $this->shippingAddress = $shippingAddress;
-        $this->status = Order::$SHIPPING_ADDRESS_SET_STATUS;
+	public function setShippingAdress(string $shippingCountry, string $shippingAddress, string $shippingCity  ): void {
+		if ($this->status !== Order::$CART_STATUS) {
+			throw new Exception(message: 'Vous ne pouvez plus modifier l\'adresse de livraison');
+		}
 
-        return 'Adresse de livraison ajoutée';
+		if (!in_array($shippingCountry, Order::$AUTORIZED_SHIPPING_COUNTRIES)) {
+			throw new Exception(message: 'Vous ne pouvez pas commander dans ce pays');
+		}
 
-    }
+		$this->shippingAddress = $shippingAddress;
+		$this->shippingCity = $shippingCity;
+		$this->shippingCountry = $shippingCountry;
+		$this->status = Order::$SHIPPING_ADDRESS_SET_STATUS;
+	}
 
-    public function pay($shippingMethod) {
+	public function setShippingMethod(string $shippingMethod): void {
+		if ($this->status !== Order::$SHIPPING_ADDRESS_SET_STATUS) {
+			throw new Exception(message: 'Vous ne pouvez pas choisir de méthode avant d\'avoir renseigné votre adresse');
+		}
 
-        if ($this->status !== Order::$SHIPPING_ADDRESS_SET_STATUS) {
-            throw new Exception('Commande non conforme');
-        }
+		if (!in_array($shippingMethod, Order::$AVAILABLE_SHIPPING_METHODS)) {
+			throw new Exception(message: 'Méthode non valide');
+		}
 
-        if ($this->shippingAddress === null) {
-            throw new Exception('Vous devez renseigner une adresse de livraison');
-        }
+		if ($shippingMethod === Order::$PAID_SHIPPING_METHOD) {
+			$this->totalPrice = $this->totalPrice + Order::$PAID_SHIPPING_METHODS_COST;
+		}
+		$this->shippingMethod = $shippingMethod;
+		$this->status = Order::$SHIPPING_METHOD_SET_STATUS;
+	}
 
-        if (!in_array($shippingMethod, Order::$AVAILABLE_SHIPPING_METHODS)) {
-            throw new Exception('Méthode de livraison non reconnue');
-        }
 
-        if ($this->$shippingMethod === Order::$PAID_SHIPPING_METHOD) {
-            $this->totalPrice += Order::$PAID_SHIPPING_METHODS_COST;
-        }
+	public function pay(): void {
+		if ($this->status !== Order::$SHIPPING_METHOD_SET_STATUS) {
+			throw new Exception(message: 'Vous ne pouvez pas payer avant d\'avoir renseigné la méthode de livraison');
+		}
 
-        $this->shippingMethod = $shippingMethod;
-        $this->status = Order::$SHIPPING_METHOD_SET_STATUS;
-        return 'Méthode de livraison choisie';
-    }
-
-    public function buyOrder () {
-        if ($this->status !== Order::$SHIPPING_METHOD_SET_STATUS) {
-            throw new Exception('Commande non conforme');
-        }
-
-        if ($this->shippingAddress === null) {
-            throw new Exception('Vous devez renseigner une adresse de livraison');
-        }
-
-        if ($this->shippingMethod === null) {
-            throw new Exception('Vous devez renseigner une méthode de livraison');
-        }
-
-        $this->status = Order::$PAID_STATUS;
-        return 'Commande payée';
-    }
-
+		$this->status = Order::$PAID_STATUS;
+	}
 }

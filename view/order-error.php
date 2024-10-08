@@ -12,6 +12,8 @@
 	<main>
 		<p>Il y a eu une erreur : <?php echo $e->getMessage(); ?></p>
 
+        <?php var_dump($order) ?>
+
 	</main>
 
 	</body>
