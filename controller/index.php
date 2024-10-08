@@ -2,9 +2,8 @@
 
 require_once '../model/Order.php';
 
-
 try {
-    $order = new Order('john Doe', ['iphone', 'macbook', 'ipad']);
+	$order = new Order('john Doe', ['iphone', 'macbook', 'ipad',]);
 
 	require_once '../view/order-created.php';
 
