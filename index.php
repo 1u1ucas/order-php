@@ -19,6 +19,8 @@ class Order {private int $id;
     public function __construct($customerName, $products) {
         $this->customerName = $customerName;
         $this->products = $products;
+        $this->createdAt = new DateTime();
+        $this->totalPrice = 5*count($products);
         $this->id = rand();
 
         if ($this->customerName === 'David Robert') {
@@ -39,6 +41,20 @@ class Order {private int $id;
         return 'Produit non trouvé';
     }
 
+    public function addProduct($product) {
+        if (count($this->products) >= 5) {
+            throw new Exception('Vous ne pouvez pas commander plus de 5 produits');
+        }
+        if (in_array($product, $this->products)) {
+            throw new Exception('Vous avez déjà commandé ce produit');
+        }
+        $this->products[] = $product;
+        $this->totalPrice += 5*count($this->products);
+
+        return 'Produit ajouté';
+
+    }
+
 }
 
 try {
@@ -48,3 +64,12 @@ try {
 }
 
 echo $order->deleteProduct('product4');
+
+echo $order->addProduct('product4');
+
+
+try{
+echo $order->addProduct('product4');
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
