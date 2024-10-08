@@ -57,10 +57,6 @@ class Order {
         return $this->totalPrice;
     }
 
-    private function calculateTotalCart() {
-       return count($this->products);
-    }
-
     private function removeProduct($product) {
         ($key = array_search($product, $this->products)) !== false;
         return $key;
