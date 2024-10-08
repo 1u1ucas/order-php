@@ -31,6 +31,7 @@ class Order {
 
     private string $customerName;
 
+
     public function __construct($customerName, $products,) {
         $this->status = 'CART';
         $this->customerName = $customerName;
@@ -50,17 +51,33 @@ class Order {
         echo "Commande {$this->id} passée !";
     }
 
+    private function calculateTotalCartPrice() {
+        $this->totalPrice = Order::$UNIQUE_PRODUCT_PRICE * count($this->products);
+
+        return $this->totalPrice;
+    }
+
+    private function calculateTotalCart() {
+       return count($this->products);
+    }
+
+    private function removeProduct($product) {
+        ($key = array_search($product, $this->products)) !== false;
+        return $key;
+    }
+
     public function deleteProduct($product) {
 
         if ($this->status !== Order::$CART_STATUS) {
             throw new Exception('Vous ne pouvez pas supprimer de produit d\'une commande qui n\'est pas en cours');
         }
 
-        if (($key = array_search($product, $this->products)) !== false) {
-            unset($this->products[$key]);
-            return 'Produit supprimé';
+        if (!in_array($product, $this->products)) {
+            throw new Exception('Vous ne pouvez pas supprimer un produit que vous n\'avez pas commandé');
         }
-        return 'Produit non trouvé';
+
+        $key = $this->removeProduct($product);
+        unset($this->products[$key]);
     }
 
     public function addProduct($product) {
@@ -76,7 +93,7 @@ class Order {
             throw new Exception('Vous avez déjà commandé ce produit');
         }
         $this->products[] = $product;
-        $this->totalPrice += Order::$MAX_PRODUCTS_BY_ORDER*count($this->products);
+        $this->totalPrice += $this->calculateTotalCartPrice();
 
         return 'Produit ajouté';
 
