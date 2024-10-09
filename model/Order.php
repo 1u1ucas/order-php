@@ -104,6 +104,21 @@ class Order {
 			throw new Exception(message: 'Vous ne pouvez pas commander dans ce pays');
 		}
 
+        //j'aimerais vérifier si les champs  sont correct avec regex
+        if (!preg_match('/^[a-zA-Z0-9\s]{5,50}$/', $shippingAddress)) {
+            throw new Exception('Adresse non valide');
+        }
+
+        if (!preg_match('/^[a-zA-Z0-9\s]{5,50}$/', $shippingCity)) {
+            throw new Exception('Ville non valide');
+        }
+
+        if (!preg_match('/^[a-zA-Z0-9\s]{5,50}$/', $shippingCountry)) {
+            throw new Exception('Pays non valide');
+        }
+
+
+
 		$this->shippingAddress = $shippingAddress;
 		$this->shippingCity = $shippingCity;
 		$this->shippingCountry = $shippingCountry;
