@@ -43,6 +43,10 @@ class Order {
 			throw new Exception("Vous êtes blacklisté");
 		}
 
+        if (!preg_match('/^[a-zA-Z0-9\s-]{2,50}$/', $customerName)) {
+            throw new Exception('Nom non valide');
+        }
+
 		$this->status = Order::$CART_STATUS;
 		$this->createdAt = new DateTime();
 		$this->id = rand();
@@ -109,11 +113,11 @@ class Order {
             throw new Exception('Adresse non valide');
         }
 
-        if (!preg_match('/^[a-zA-Z0-9\s.-]{5,50}$/', $shippingCity)) {
+        if (!preg_match('/^[a-zA-Z0-9\s.-]{1,50}$/', $shippingCity)) {
             throw new Exception('Ville non valide');
         }
 
-        if (!preg_match('/^[a-zA-Z0-9\s.-]{5,50}$/', $shippingCountry)) {
+        if (!preg_match('/^[a-zA-Z0-9\s.-]{2,50}$/', $shippingCountry)) {
             throw new Exception('Pays non valide');
         }
 
