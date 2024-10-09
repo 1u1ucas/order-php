@@ -15,7 +15,7 @@
     <form method="POST" action="../controller/create-order.php">
 
     <label for="customerName">Nom du client</label>
-			<input type="text" id="customerName" name="customerName" required>
+			<input type="text" id="customerName" name="customerName" required pattern="^[a-zA-Z0-9\s-]{2,50}$">
 			<br>
 
 			<label for="product">Produit</label>
