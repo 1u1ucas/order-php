@@ -20,7 +20,7 @@
 
 			<label for="product">Produit</label>
 
-			<select id="product" name="products[]" multiple>
+			<select id="product" name="products[]" multiple  required size="6" onchange="validateSelection()">
                 <option value="Iphone">Iphone</option>
                 <option value="Samsung">Samsung</option>
                 <option value="Huawei">Huawei</option>
@@ -35,6 +35,18 @@
 
     </form>
 
-    
+</main>
+
+<script>
+        function validateSelection() {
+            const select = document.getElementById('product');
+            const selectedOptions = Array.from(select.selectedOptions);
+            if (selectedOptions.length < 1 || selectedOptions.length > 5) {
+                select.setCustomValidity('Vous devez sélectionner entre 1 et 5 produits.');
+            } else {
+                select.setCustomValidity('');
+            }
+        }
+    </script>
 </body>
 </html>
