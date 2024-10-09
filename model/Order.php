@@ -154,3 +154,10 @@ class Order {
 		$this->status = Order::$PAID_STATUS;
 	}
 }
+
+
+function persistOrder(Order $order) {
+
+    $_SESSION['order'] = $order;
+
+}

@@ -17,11 +17,11 @@ try {
 
     $order = new Order($customerName, $products);
 
-    $_SESSION['order'] = $order;
+    persistOrder($order);
 
-    header('Location: ../view/shippingAdress.php');
+    require_once '../view/shippingAdress.php';
 
 } catch (Exception $e) {
     $_SESSION['error_message'] = $e->getMessage();
-   header('Location: ../view/order-error.php');
+    require_once '../view/order-error.php';
 }

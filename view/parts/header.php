@@ -21,6 +21,6 @@ require_once '../model/Order.php';
 </header>
 <nav>
     <ul>
-        <li><a href="home.php">Home</a></li>
+        <li><a href="index.php">Home</a></li>
     </ul>
 </nav>

@@ -14,12 +14,11 @@ try {
 
     $order->setShippingAdress($ShippingCountry, $ShippingCity, $ShippingAdress);
 
-    $_SESSION['order'] = $order;
-    
+    persistOrder($order);
 
-	header('Location: ../view/order-created.php');
+	require_once '../view/order-created.php';
 
 } catch (Exception $e) {
 
-	header('Location: ../view/order-error.php');
+	require_once '../view/order-error.php';
 }
