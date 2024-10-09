@@ -17,9 +17,9 @@ try {
     $_SESSION['order'] = $order;
     
 
-	require_once '../view/order-created.php';
+	header('Location: ../view/order-created.php');
 
 } catch (Exception $e) {
 
-	require_once '../view/order-error.php';
+	header('Location: ../view/order-error.php');
 }

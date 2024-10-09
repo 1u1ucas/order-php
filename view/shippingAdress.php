@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
-<header>
-    <h1>Le Eshop au top</h1>
-</header>
+<?php require_once 'parts/header.php' ?>
 
 <main>
     <form method="POST" action="../controller/add-shipping-adress.php">
@@ -30,7 +19,6 @@
 
 
     </form>
+</main>
 
-    
-</body>
-</html>
+<?php require_once 'parts/footer.php'; ?>

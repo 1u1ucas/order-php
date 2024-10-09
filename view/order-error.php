@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Erreur</title>
-	</head>
-	<body>
-
-	<header>
-		<h1>Le Eshop au top</h1>
-	</header>
+<?php require_once 'parts/header.php';?>
 	
 	<main>
 		<p>Il y a eu une erreur : <?php echo $e->getMessage(); ?></p>
 
-        <?php var_dump($order) ?>
+        <?php var_dump($_SESSION['order']) ?>
 
 	</main>
 
-	</body>
-</html>
+<?php require_once 'parts/footer.php'; ?>

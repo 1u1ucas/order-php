@@ -1,21 +1,27 @@
 <?php
+session_start();
 
 require_once '../model/Order.php';
 
-session_start();
-
 try {
+    if (!isset($_POST['customerName']) || empty(trim($_POST['customerName']))) {
+        throw new Exception('Le nom du client est requis.');
+    }
 
-	$customerName = $_POST['customerName'];
-	$products = $_POST['products'];
+    if (!isset($_POST['products']) || !is_array($_POST['products']) || count($_POST['products']) < 1 || count($_POST['products']) > 5) {
+        throw new Exception('Vous devez sélectionner entre 1 et 5 produits.');
+    }
 
-	$order = new Order($customerName, $products);
+    $customerName = trim($_POST['customerName']);
+    $products = $_POST['products'];
 
-	$_SESSION['order'] = $order;
+    $order = new Order($customerName, $products);
 
-	require_once '../view/shippingAdress.php';
+    $_SESSION['order'] = $order;
+
+    header('Location: ../view/shippingAdress.php');
 
 } catch (Exception $e) {
-
-	require_once '../view/order-error.php';
+    $_SESSION['error_message'] = $e->getMessage();
+   header('Location: ../view/order-error.php');
 }
