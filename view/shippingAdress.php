@@ -1,7 +1,7 @@
 <?php require_once 'parts/header.php' ?>
 
 <main>
-    <form method="POST" action="../controller/add-shipping-adress.php">
+    <form method="POST" action="add-shipping-adress.php">
 
     <label for="ShippingCountry">Pays de livraison</label>
 			<input type="text" id="ShippingCountry" name="ShippingCountry" required pattern="^[a-zA-Z0-9\s.-]{5,50}$" title="Le pays doit contenir entre 5 et 50 caractères et des espaces.">

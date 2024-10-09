@@ -1,12 +1,3 @@
-<?php
-
-session_start();
-
-require_once '../model/Order.php';
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +12,6 @@ require_once '../model/Order.php';
 </header>
 <nav>
     <ul>
-        <li><a href="index.php">Home</a></li>
+        <li><a href="../controller/index.php">Home</a></li>
     </ul>
 </nav>

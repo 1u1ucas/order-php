@@ -2,6 +2,7 @@
 session_start();
 
 require_once '../model/Order.php';
+require_once '../model/function.php';
 
 try {
 

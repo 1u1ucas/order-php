@@ -33,6 +33,9 @@ class Order {
 
 	private ?string $shippingCountry;
 
+    private ?string $paymentMethod;
+    
+    private ?string $paymentinformation;
 	public function __construct(string $customerName, array $products) {
 
 		if (count($products) > Order::$MAX_PRODUCTS_BY_ORDER) {
@@ -105,18 +108,18 @@ class Order {
 		}
 
 		if (!in_array($shippingCountry, Order::$AUTORIZED_SHIPPING_COUNTRIES)) {
-			throw new Exception(message: 'Vous ne pouvez pas commander dans ce pays');
-		}
-
-        //j'aimerais vérifier si les champs  sont correct avec regex
+            throw new Exception('Vous ne pouvez pas commander dans ce pays');
+        }
+        
+        // Vérifier si les champs sont corrects avec regex
         if (!preg_match('/^[a-zA-Z0-9\s.-]{5,50}$/', $shippingAddress)) {
             throw new Exception('Adresse non valide');
         }
-
+        
         if (!preg_match('/^[a-zA-Z0-9\s.-]{1,50}$/', $shippingCity)) {
             throw new Exception('Ville non valide');
         }
-
+        
         if (!preg_match('/^[a-zA-Z0-9\s.-]{2,50}$/', $shippingCountry)) {
             throw new Exception('Pays non valide');
         }
@@ -139,25 +142,50 @@ class Order {
 		}
 
 		if ($shippingMethod === Order::$PAID_SHIPPING_METHOD) {
-			$this->totalPrice = $this->totalPrice + Order::$PAID_SHIPPING_METHODS_COST;
+			$this->totalPrice += Order::$PAID_SHIPPING_METHODS_COST;
 		}
 		$this->shippingMethod = $shippingMethod;
 		$this->status = Order::$SHIPPING_METHOD_SET_STATUS;
 	}
 
 
-	public function pay(): void {
+	public function setPaymentMethod(string $paymentMethod, string $paymentinformation): void {
+
+
+
+
 		if ($this->status !== Order::$SHIPPING_METHOD_SET_STATUS) {
 			throw new Exception(message: 'Vous ne pouvez pas payer avant d\'avoir renseigné la méthode de livraison');
 		}
 
+        if (!in_array($paymentMethod, ['Carte bancaire', 'Paypal'])) {
+            throw new Exception('Méthode de paiement non reconnue');
+        }
+
+        if ($paymentMethod === 'Carte bancaire') {
+            if (!preg_match('/^[0-9]{16}$/', $paymentinformation)) {
+                throw new Exception('Numéro de carte non valide');
+            }
+        } elseif ($paymentMethod === 'Paypal') {
+            if (!filter_var($paymentinformation, FILTER_VALIDATE_EMAIL)) {
+                throw new Exception('Adresse email non valide');
+            }
+        } else {
+            throw new Exception('Méthode de paiement non reconnue');
+        }
+
+        $this->paymentMethod = $paymentMethod;
+        $this->paymentinformation = $paymentinformation;
 		$this->status = Order::$PAID_STATUS;
 	}
-}
 
-
-function persistOrder(Order $order) {
-
-    $_SESSION['order'] = $order;
-
+    public function orderSummary(): string {
+        $productsAsString = implode(',', $this->products);
+        return "Commande n°{$this->id} passée le {$this->createdAt->format('d/m/Y')}<br>" .
+               "par {$this->customerName}<br>" .
+               "pour les produits suivants : {$productsAsString}<br>" .
+               "sera livré à {$this->shippingAddress} {$this->shippingCity} {$this->shippingCountry}<br>" .
+               "par {$this->shippingMethod}<br>" .
+               "pour un montant total de {$this->totalPrice}€";
+    }
 }
