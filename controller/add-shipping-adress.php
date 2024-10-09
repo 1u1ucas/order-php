@@ -13,6 +13,8 @@ try {
     $ShippingAdress = $_POST['ShippingAdress'];
 
     $order->setShippingAdress($ShippingCountry, $ShippingCity, $ShippingAdress);
+
+    $_SESSION['order'] = $order;
     
 
 	require_once '../view/order-created.php';
