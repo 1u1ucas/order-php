@@ -23,10 +23,10 @@ try {
 
     persistOrder($order);
 
-	require_once '../view/shippingPayment.php';
+    header('Location: /order-php/shippingPayment');
 
 } catch (Exception $e) {
 
     $_SESSION['error_message'] = $e->getMessage();
-	require_once '../view/order-error.php';
+    header('Location: /order-php/shippingMethod');
 }

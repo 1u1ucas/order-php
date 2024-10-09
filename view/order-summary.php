@@ -1,6 +1,6 @@
 <?php 
 require_once 'parts/header.php';
-require_once '../model/Order.php';
+require_once 'model/Order.php';
 
 session_start();
 
@@ -13,7 +13,7 @@ $order = $_SESSION['order'];
     <div>
         <?php echo $order->orderSummary(); ?>
     </div>
-    <a href="../view/order-created.php">Confirmer la commande</a>
+    <a href="/order-php/order-created">Confirmer la commande</a>
 </main>
 
 <?php require_once 'parts/footer.php'; ?>

@@ -36,9 +36,11 @@ try {
 
     persistOrder($order);
 
-    require_once '../view/shippingMethod.php';
+    header('Location: /order-php/shippingMethod');
 
 } catch (Exception $e) {
-    echo '<p>Une erreur est survenue : ' . htmlspecialchars($e->getMessage()) . '</p>';
+    
+        $_SESSION['error_message'] = $e->getMessage();
+        header('Location: /order-php/shippingAdress');
 }
 ?>

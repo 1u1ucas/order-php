@@ -13,9 +13,9 @@ try {
 
     persistOrder($order);
 
-    require_once '../view/shippingAdress.php';
+    header('Location: /order-php/ShippingAdress');
 
 } catch (Exception $e) {
     $_SESSION['error_message'] = $e->getMessage();
-    require_once '../view/order-error.php';
+    header('Location: /order-php');
 }

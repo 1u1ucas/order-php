@@ -1,7 +1,7 @@
 <?php require_once 'parts/header.php'; ?>
 
 <main>
-    <form method="POST" action="create-order.php">
+    <form method="POST" action="controller/create-order.php">
 
     <label for="customerName">Nom du client</label>
     <input type="text" id="customerName" name="customerName" required pattern="^[a-zA-Z0-9\s-]{2,50}$" title="Le nom doit contenir entre 2 et 50 caractères alphanumériques, des espaces ou des tirets.">

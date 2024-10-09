@@ -12,6 +12,6 @@
 </header>
 <nav>
     <ul>
-        <li><a href="../controller/index.php">Home</a></li>
+        <li><a href="/order-php/">Home</a></li>
     </ul>
 </nav>

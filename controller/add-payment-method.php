@@ -35,10 +35,10 @@ try {
 
     persistOrder($order);
 
-    require_once '../view/order-summary.php';
+    header('Location: /order-php/order-summary');
 
 } catch (Exception $e) {
 
     $_SESSION['error_message'] = $e->getMessage();
-    require_once '../view/order-error.php';
+    header('Location: /order-php/shippingPayment');
 }
