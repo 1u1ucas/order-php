@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once '../model/Order.php';
-require_once '../model/function.php';
+require_once './model/Order.php';
+require_once './model/function.php';
 
 try {
 
@@ -13,9 +13,8 @@ try {
 
     persistOrder($order);
 
-    header('Location: /order-php/ShippingAdress');
-
+    header('Location: /order-php/shippingAdress');
 } catch (Exception $e) {
     $_SESSION['error_message'] = $e->getMessage();
-    header('Location: /order-php');
+    header('Location: /order-php/');
 }

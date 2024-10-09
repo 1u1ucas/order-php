@@ -1,9 +1,13 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once('./controller/controller.php');
 
 // Récupère l'url actuelle et supprime le chemin de base
-// c'est à dire : http://localhost:8888/esd-oop-php/public/
+// c'est à dire : http://localhost:8888/order-php/
 // donc cela ne garde que la fin de l'url
 
 $requestUri = $_SERVER['REQUEST_URI'];
@@ -40,6 +44,36 @@ switch ($endUri) {
     case "shippingPayment":
         $indexController = new IndexController();
         $indexController->shippingPayment();
+        break;
+
+    case "createOrder":
+        $indexController = new IndexController();
+        $indexController->createOrder();
+        break;
+    
+    case "addShippingAdress":
+        $indexController = new IndexController();
+        $indexController->addShippingAdress();
+        break;
+    
+    case "addShippingMethod":
+        $indexController = new IndexController();
+        $indexController->addShippingMethod();
+        break;
+    
+    case "addPaymentMethod":
+        $indexController = new IndexController();
+        $indexController->addPaymentMethod();
+        break;
+
+    case "order":
+        $indexController = new IndexController();
+        $indexController->order();
+        break;
+    
+    case "function":
+        $indexController = new IndexController();
+        $indexController->function();
         break;
 
     }
