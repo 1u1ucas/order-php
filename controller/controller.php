@@ -32,7 +32,7 @@ class IndexController {
     }
 
     public function createOrder() {
-        require_once('controller/create-order.php');
+        require_once('controller/create-entity/Order.php');
     }
 
     public function addShippingAdress() {
@@ -48,7 +48,7 @@ class IndexController {
     }
 
     public function order() {
-        require_once('model/Order.php');
+        require_once('model/entity/Order.php');
     }
 
     public function function(): void{

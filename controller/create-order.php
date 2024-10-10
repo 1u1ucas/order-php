@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once './model/Order.php';
-require_once './model/function.php';
+require_once './model/entity/Order.php';
+require_once './model/repository/OrderRepository.php';
 
 try {
 
@@ -11,7 +11,8 @@ try {
 
     $order = new Order($customerName, $products);
 
-    persistOrder($order);
+    $orderRepository = new OrderRepository();
+    $orderRepository->persist($order);
 
     header('Location: /order-php/shippingAdress');
 } catch (Exception $e) {

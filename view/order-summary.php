@@ -1,6 +1,6 @@
 <?php 
 require_once 'parts/header.php';
-require_once 'model/Order.php';
+require_once 'model/entity/Order.php';
 
 session_start();
 

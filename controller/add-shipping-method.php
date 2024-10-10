@@ -1,7 +1,7 @@
 <?php
 
-require_once '../model/Order.php';
-require_once '../model/function.php';
+require_once '../model/entity/Order.php';
+require_once '../model/repository/OrderRepository.php';
 
 session_start();
 
@@ -21,7 +21,8 @@ try {
 
     $order->setShippingMethod($shippingMethod);
 
-    persistOrder($order);
+    $orderRepository = new OrderRepository();
+    $orderRepository->persist($order);
 
     header('Location: /order-php/shippingPayment');
 

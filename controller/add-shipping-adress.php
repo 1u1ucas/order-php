@@ -1,12 +1,8 @@
 <?php
-require_once '../model/Order.php';
-require_once '../model/function.php';
-
-session_start();
+require_once '../model/entity/Order.php';
+require_once '../model/repository/OrderRepository.php';
 
 try {
-
-
 
 
     if (!isset($_SESSION['order'])) {
@@ -34,7 +30,8 @@ try {
 
     $order->setShippingAdress($ShippingCountry, $ShippingAdress, $ShippingCity);
 
-    persistOrder($order);
+    $orderRepository = new OrderRepository();
+    $orderRepository->persist($order);
 
     header('Location: /order-php/shippingMethod');
 
