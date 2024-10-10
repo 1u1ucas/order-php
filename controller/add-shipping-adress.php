@@ -1,15 +1,18 @@
 <?php
-require_once '../model/entity/Order.php';
-require_once '../model/repository/OrderRepository.php';
+require_once './model/entity/Order.php';
+require_once './model/repository/OrderRepository.php';
 
+$orderRepository = new OrderRepository();
 try {
-
+    
 
     if (!isset($_SESSION['order'])) {
         throw new Exception('La commande n\'existe pas dans la session.');
     }
 
     $order = $_SESSION['order'];
+
+    
 
     if (!isset($_POST['ShippingCountry']) || empty(trim($_POST['ShippingCountry']))) {
         throw new Exception('Le pays de livraison est requis.');
@@ -28,9 +31,10 @@ try {
     $ShippingAdress = trim($_POST['ShippingAdress']);
 
 
+
     $order->setShippingAdress($ShippingCountry, $ShippingAdress, $ShippingCity);
 
-    $orderRepository = new OrderRepository();
+   
     $orderRepository->persist($order);
 
     header('Location: /order-php/shippingMethod');
@@ -40,4 +44,3 @@ try {
         $_SESSION['error_message'] = $e->getMessage();
         header('Location: /order-php/shippingAdress');
 }
-?>

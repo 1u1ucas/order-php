@@ -1,8 +1,8 @@
 <?php
-session_start();
 
 require_once './model/entity/Order.php';
 require_once './model/repository/OrderRepository.php';
+$orderRepository = new OrderRepository();
 
 try {
 
@@ -11,7 +11,7 @@ try {
 
     $order = new Order($customerName, $products);
 
-    $orderRepository = new OrderRepository();
+ 
     $orderRepository->persist($order);
 
     header('Location: /order-php/shippingAdress');

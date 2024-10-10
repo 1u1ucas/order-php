@@ -2,7 +2,7 @@
 
 <main>
     <h1>paiement</h1>
-    <form action="controller/add-payment-method.php" method="post">
+    <form action="/order-php/addPaymentMethod" method="post">
         <label for="paymentMethod">Choisissez un mode de paiement</label>
         <select name="paymentMethod" id="paymentMethod" required size="3" onchange="validateSelection()">
             <option value="Carte bancaire">Carte bancaire</option>

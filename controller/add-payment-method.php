@@ -1,7 +1,8 @@
 <?php 
 
-require_once '../model/Order.php';
-require_once '../model/repository/OrderRepository.php';
+require_once './model/entity/Order.php';
+require_once './model/repository/OrderRepository.php';
+$orderRepository = new OrderRepository();
 
 
 try {
@@ -32,7 +33,6 @@ try {
 
     $order->setPaymentMethod($paymentMethod, $paymentinformation);
 
-    $orderRepository = new OrderRepository();
 
     $orderRepository->persist($order);
 

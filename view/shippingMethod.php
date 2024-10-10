@@ -2,7 +2,7 @@
 
 <main>
     <h1>Choix du mode de livraison</h1>
-    <form action="controller/add-shipping-method.php" method="post">
+    <form action="/order-php/addShippingMethod" method="post">
         <label for="shippingMethod">Choisissez un mode de livraison</label>
         <select name="shippingMethod" id="shippingMethod" required size="3" onchange="validateSelection()">
             <option value="Chronopost Express">Chronopost Express</option>
